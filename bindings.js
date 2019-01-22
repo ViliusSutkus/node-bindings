@@ -5,6 +5,7 @@
 
 var fs = require('fs')
   , path = require('path')
+  , url = require('url')
   , join = path.join
   , dirname = path.dirname
   , exists = ((fs.accessSync && function (path) { try { fs.accessSync(path); } catch (e) { return false; } return true; })
@@ -141,11 +142,7 @@ exports.getFileName = function getFileName (calling_file) {
   // handle filename that starts with "file://"
   var fileSchema = "file://";
   if (fileName.indexOf(fileSchema) === 0) {
-    fileName = fileName.substr(fileSchema.length)
-    // on windows
-    if (fileName.indexOf(":/") == 2) {
-      fileName = fileName.substr(1)
-    }
+    fileName = url.fileURLToPath(fileName);
   }
 
   return fileName
